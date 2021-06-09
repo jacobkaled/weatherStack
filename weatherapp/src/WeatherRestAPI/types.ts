@@ -14,3 +14,15 @@ type current = {
     wind_dir: string
     wind_speed: number
 }
+
+type location = {
+    country: string
+    lat: string
+    localtime: string
+    localtime_epoch: number
+    lon: string
+    name: string
+    region: string
+    timezone_id: string
+    utc_offset: string
+}
