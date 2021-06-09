@@ -1,2 +1,0 @@
-# weatherStack
-testing WeatherStack
