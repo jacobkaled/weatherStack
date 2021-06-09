@@ -26,3 +26,11 @@ type location = {
     timezone_id: string
     utc_offset: string
 }
+
+type request = {
+    language: string
+    query: string
+    type: string
+    unit: string
+}
+
