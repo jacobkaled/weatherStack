@@ -34,3 +34,9 @@ type request = {
     unit: string
 }
 
+export type weatherType = {
+    current: current
+    location: location
+    request: request
+
+}
