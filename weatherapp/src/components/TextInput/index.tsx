@@ -1,11 +1,23 @@
 import React from "react";
 import styled from "styled-components";
 
-const TextInput = () => {
+type TextInputProps = {
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+};
+
+const TextInput: React.FC<TextInputProps> = (props: TextInputProps) => {
+  const { value, onChange } = props;
   return (
     <TextInputWrapper>
       <label htmlFor="input"> Search Text </label>
-      <InputText type="text" id="input" name="input" value="" />
+      <InputText
+        type="text"
+        id="input"
+        name="input"
+        value={value}
+        onChange={onChange}
+      />
     </TextInputWrapper>
   );
 };
