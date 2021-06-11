@@ -9,6 +9,7 @@ import { weatherType } from "../WeatherRestAPI/types";
 
 type RootRouteProps = {
   cityInputName: string;
+  fetchWeatherData: (cityName: string) => Promise<void>;
   SearchResultCityName?: string | undefined;
   handleTextChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   makeCurrentFetchedDataHome: (weatherData: weatherType) => void;
@@ -19,6 +20,7 @@ const RootRoute: React.FC<RootRouteProps> = (props: RootRouteProps) => {
   const {
     cityInputName,
     handleTextChange,
+    fetchWeatherData,
     SearchResultCityName,
     loading,
     makeCurrentFetchedDataHome,
