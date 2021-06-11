@@ -5,20 +5,26 @@ import { RequestWeather } from "./WeatherRestAPI/RequestWeather";
 import debounce from "lodash.debounce";
 import GlobalStyle, { theme } from "./Theme";
 import { ThemeProvider } from "styled-components";
-import RootRoute from "./modules";
-import { cityWeatherData } from "./Atoms";
+import RootRoute from "./Modules";
+import { cityWeatherData, defaultValue } from "./Atoms";
 import { useRecoilState } from "recoil";
 
 const App = () => {
+  // store customer's input value
   const [cityInputName, setCityInputName] = useState<string>("");
+
+  // getter/setter for storing fetched weather data locally
   const [fetchedWeatherData, setFetchedWeatherData] =
-    useState<weatherType | undefined>();
+    useState<weatherType>(defaultValue);
+
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  // getter/setter for storing weather data in global state
   const [weatherData, setWeatherData] =
-    useRecoilState<weatherType | undefined>(cityWeatherData);
+    useRecoilState<weatherType>(cityWeatherData);
 
   const delayedinput = useCallback(
-    debounce((cityName: string) => fetchWeather(cityName), 500),
+    debounce((cityName: string) => fetchWeatherData(cityName), 500),
     []
   );
 
@@ -33,9 +39,9 @@ const App = () => {
     delayedinput(e.target.value);
   };
 
-  const fetchWeather = async (cityName: string) => {
+  const fetchWeatherData = async (cityName: string): Promise<void> => {
     if (!cityName) {
-      setFetchedWeatherData(undefined);
+      //setFetchedWeatherData(undefined);
       return;
     }
 
@@ -54,8 +60,9 @@ const App = () => {
       <WeatherWrapper>
         <GlobalStyle />
         <RootRoute
+          fetchWeatherData={fetchWeatherData}
           cityInputName={cityInputName}
-          SearchResultCityName={fetchedWeatherData?.location.name}
+          SearchResultCityName={fetchedWeatherData.location.name}
           makeCurrentFetchedDataHome={makeCurrentFetchedDataHome}
           handleTextChange={handleTextChange}
           loading={isLoading}
