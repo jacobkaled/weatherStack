@@ -1,3 +1,4 @@
+import { createGlobalStyle } from 'styled-components';
 export const theme ={
   sizes:{
     gutterSmall : '2rem',
@@ -8,3 +9,16 @@ export const theme ={
     backgroundcolor:'lightBlue',
   }
 }
+
+
+ 
+ const GlobalStyle = createGlobalStyle`
+  body {
+    margin: 0;
+    padding: 0;
+    background: teal;
+    font-family: Open-Sans, Helvetica, Sans-Serif;
+  }
+`;
+
+export default GlobalStyle

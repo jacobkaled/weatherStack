@@ -40,3 +40,5 @@ export type weatherType = {
     request: request
 
 }
+ type TabChoice = "search" | "display";
+ export default TabChoice
