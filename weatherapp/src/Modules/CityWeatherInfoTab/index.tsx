@@ -1,7 +1,7 @@
 import React from "react";
 
 const CityWeatherInfoTab = () => {
-  return <h1>root</h1>;
+  return <h1>CityWeatherInfoTab</h1>;
 };
 
 export default CityWeatherInfoTab;
