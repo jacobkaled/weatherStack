@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 import styled from "styled-components";
-import CitySearchTab from "./CitySearchTab";
-import CityWeatherTabInfo from "./CityWeatherInfoTab";
+import CitySearchTabs from "./CitySearchTabs";
+import CityWeatherInfoTab from "./CityWeatherInfoTab";
 import MenuBar from "./MenuBar";
 import TabChoice from "../WeatherRestAPI/types";
 import SearchResult from "./SearchResult";
@@ -9,10 +9,9 @@ import { weatherType } from "../WeatherRestAPI/types";
 
 type RootRouteProps = {
   cityInputName: string;
-  fetchWeatherData: (cityName: string) => Promise<void>;
-  SearchResultCityName?: string | undefined;
+  SearchResultCityName: string;
   handleTextChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  makeCurrentFetchedDataHome: (weatherData: weatherType) => void;
+  makeCurrentFetchedDataHome: () => void;
   loading: boolean;
 };
 
@@ -20,7 +19,6 @@ const RootRoute: React.FC<RootRouteProps> = (props: RootRouteProps) => {
   const {
     cityInputName,
     handleTextChange,
-    fetchWeatherData,
     SearchResultCityName,
     loading,
     makeCurrentFetchedDataHome,
@@ -33,19 +31,23 @@ const RootRoute: React.FC<RootRouteProps> = (props: RootRouteProps) => {
 
   return (
     <RootRouteWrapper>
-      <SearchResult
-        result={SearchResultCityName}
-        loading={loading}
-        makeCurrentFetchedDataHome={makeCurrentFetchedDataHome}
-      />
       <MenuBar currentTab={currentTab} changeCurrentTab={changeCurrentTab} />
       {currentTab === "search" ? (
-        <CitySearchTab
-          cityInputName={cityInputName}
-          handleTextChange={handleTextChange}
-        />
+        <Fragment>
+          {
+            <SearchResult
+              SearchResultCityName={SearchResultCityName}
+              loading={loading}
+              makeCurrentFetchedDataHome={makeCurrentFetchedDataHome}
+            />
+          }
+          <CitySearchTabs
+            cityInputName={cityInputName}
+            handleTextChange={handleTextChange}
+          />
+        </Fragment>
       ) : (
-        <CityWeatherTabInfo />
+        <CityWeatherInfoTab />
       )}
     </RootRouteWrapper>
   );

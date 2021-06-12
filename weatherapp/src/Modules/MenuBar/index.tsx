@@ -1,27 +1,49 @@
 import React from "react";
-import styled from "styled-components";
 import TabChoice from "../../WeatherRestAPI/types";
-import { icons } from "../../components/Icons";
+import styled from "styled-components";
+import { cityWeatherData } from "../../Atoms";
+import { useRecoilValue } from "recoil";
 
 type MenuBarProps = {
   currentTab: TabChoice;
-  changeCurrentTab: (tabValue: TabChoice) => void;
+  changeCurrentTab: (tabType: TabChoice) => void;
 };
 const MenuBar: React.FC<MenuBarProps> = (props: MenuBarProps) => {
+  const { changeCurrentTab } = props;
+  const currentWeatherData = useRecoilValue(cityWeatherData);
+
   return (
     <MenuBarWrapper>
-      {icons().searchIcon}
-      <div>CitySearch</div>
-      <div>info display</div>
+      <Button onClick={() => changeCurrentTab("search")}> Search City</Button>
+      <Button
+        onClick={() =>
+          currentWeatherData.location.name !== "_" &&
+          changeCurrentTab("display")
+        }
+      >
+        show weather data
+      </Button>
     </MenuBarWrapper>
   );
 };
 
 const MenuBarWrapper = styled.div`
   width: 100%;
-  height: 100px;
+  height: 50px;
   display: flex;
-  background-color: lightsteelblue;
+  align-items: center;
+  justify-content: space-around;
+  background-color: lightgray;
+`;
+
+const Button = styled.div`
+  cursor: pointer;
+  height: 100%;
+  border: 1px solid gray;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 export default MenuBar;
