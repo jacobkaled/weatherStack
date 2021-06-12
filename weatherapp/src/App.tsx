@@ -1,7 +1,7 @@
 import React, { useCallback, useState, useEffect } from "react";
 import styled from "styled-components";
 import { weatherType } from "./WeatherRestAPI/types";
-import { RequestWeather } from "./WeatherRestAPI/RequestWeather";
+import { requestWeather } from "./WeatherRestAPI/RequestWeather";
 import debounce from "lodash.debounce";
 import GlobalStyle, { theme } from "./Theme";
 import { ThemeProvider } from "styled-components";
@@ -28,7 +28,7 @@ const App = () => {
     []
   );
 
-  useEffect(() => console.log(weatherData));
+  // useEffect(() => console.log(weatherData));
 
   const makeCurrentFetchedDataHome = (): void => {
     setWeatherData(fetchedWeatherData);
@@ -40,18 +40,16 @@ const App = () => {
   };
 
   const fetchWeatherData = async (cityName: string): Promise<void> => {
-    if (!cityName) {
-      //setFetchedWeatherData(undefined);
-      return;
-    }
-
-    setIsLoading(true);
-    const res = await RequestWeather(cityName);
+    //setIsLoading(true);
+    const res = await requestWeather(cityName);
     const weatherData: weatherType = await res.json();
-    setIsLoading(false);
-    //console.log("cityName", cityName);
-    if (weatherData.location) {
+    // setIsLoading(false);
+    console.log("cityName", cityName);
+    console.log("weatherData", weatherData);
+    if (weatherData.request) {
       setFetchedWeatherData(weatherData);
+    } else {
+      setFetchedWeatherData(defaultValue);
     }
   };
 
@@ -60,7 +58,6 @@ const App = () => {
       <WeatherWrapper>
         <GlobalStyle />
         <RootRoute
-          fetchWeatherData={fetchWeatherData}
           cityInputName={cityInputName}
           SearchResultCityName={fetchedWeatherData.location.name}
           makeCurrentFetchedDataHome={makeCurrentFetchedDataHome}
