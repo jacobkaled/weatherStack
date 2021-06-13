@@ -1,6 +1,6 @@
 # Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project was bootstrapped with Create React App and strongly typed using typescript. 
 
 ## important : API endpoint limitation
 
@@ -8,15 +8,15 @@ the API keys from weatherstack.com are limited to 150 API call , so if you reach
 
 ## Global state
 
-i am using Recoil as a global state managment library which is a modern / react like library from facebook that is Asyncronous by default and it does helps fetching data and managening it accross the applicaiton
+Using Recoil as a global state managment library which is a modern / react like library from facebook that is Asyncronous by default and it does helps fetching data and managening it accross the applicaiton
 
 ## Styling
 
-i am using styled components gloabltheme to provide unified css values throughout the app
+Using styled components gloabltheme to provide unified css values throughout the app
 
 ## Debouncing
 
-i am delaying the API calls after the user stop typing by 500 ms
+The API calls are Debounced by 500 ms
 
 ## ToDos
 
