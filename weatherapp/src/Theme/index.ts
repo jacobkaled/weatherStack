@@ -4,6 +4,7 @@ export const theme ={
     gutterSmall : '2rem',
     gutterMedium : '4rem',
     gutterLarge : '6rem',
+    inputWidth: '400px'
   },
   colors:{
     backgroundcolor:'lightBlue',
