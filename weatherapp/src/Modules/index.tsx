@@ -5,24 +5,10 @@ import CityWeatherInfoTab from "./CityWeatherInfoTab";
 import MenuBar from "./MenuBar";
 import TabChoice from "../WeatherRestAPI/types";
 import SearchResult from "./SearchResult";
-import { weatherType } from "../WeatherRestAPI/types";
 
-type RootRouteProps = {
-  cityInputName: string;
-  SearchResultCityName: string;
-  handleTextChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  makeCurrentFetchedDataHome: () => void;
-  loading: boolean;
-};
+type RootRouteProps = {};
 
 const RootRoute: React.FC<RootRouteProps> = (props: RootRouteProps) => {
-  const {
-    cityInputName,
-    handleTextChange,
-    SearchResultCityName,
-    loading,
-    makeCurrentFetchedDataHome,
-  } = props;
   const [currentTab, setCurrentTab] = useState<TabChoice>("search");
 
   const changeCurrentTab = (tabType: TabChoice): void => {
@@ -34,17 +20,8 @@ const RootRoute: React.FC<RootRouteProps> = (props: RootRouteProps) => {
       <MenuBar currentTab={currentTab} changeCurrentTab={changeCurrentTab} />
       {currentTab === "search" ? (
         <Fragment>
-          {
-            <SearchResult
-              SearchResultCityName={SearchResultCityName}
-              loading={loading}
-              makeCurrentFetchedDataHome={makeCurrentFetchedDataHome}
-            />
-          }
-          <CitySearchTabs
-            cityInputName={cityInputName}
-            handleTextChange={handleTextChange}
-          />
+          {<SearchResult />}
+          <CitySearchTabs />
         </Fragment>
       ) : (
         <CityWeatherInfoTab />

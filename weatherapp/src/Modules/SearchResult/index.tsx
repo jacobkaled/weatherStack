@@ -1,21 +1,23 @@
 import React from "react";
 import { icons } from "../../components/Icons";
-import { weatherType } from "../../WeatherRestAPI/types";
 import styled from "styled-components";
-import { cityWeatherData } from "../../Atoms";
-import { useRecoilValue } from "recoil";
+import {
+  cityWeatherData,
+  loadState,
+  defaultValue,
+  searchedCityWeatherData,
+} from "../../Atoms";
+import { useRecoilState, useRecoilValue } from "recoil";
 
-type SearchResultProps = {
-  SearchResultCityName: string;
-  makeCurrentFetchedDataHome: () => void;
-  loading: boolean;
-};
+type SearchResultProps = {};
 
 const SearchResult: React.FC<SearchResultProps> = (
   props: SearchResultProps
 ) => {
-  const { SearchResultCityName, loading, makeCurrentFetchedDataHome } = props;
-  const currentWeatherData = useRecoilValue(cityWeatherData);
+  const [savedWeatherData, setsavedWeatherData] =
+    useRecoilState(cityWeatherData);
+  const loading = useRecoilValue(loadState);
+  const searchedWeatherData = useRecoilValue(searchedCityWeatherData);
 
   return (
     <SearchResultWrapper>
@@ -23,13 +25,23 @@ const SearchResult: React.FC<SearchResultProps> = (
         {loading ? (
           <Spinner>{icons().spinner}</Spinner>
         ) : (
-          SearchResultCityName !== "_" && (
+          searchedWeatherData.location.name &&
+          searchedWeatherData.location.name !== "_" && (
             <ResultBar>
-              {SearchResultCityName}
-              {currentWeatherData.location.name === SearchResultCityName ? (
-                <Pill>already home </Pill>
+              <CityNameTab> {searchedWeatherData.location.name}</CityNameTab>
+              {searchedWeatherData.location.name ===
+              savedWeatherData.location.name ? (
+                <Pill
+                  isPrimary={true}
+                  onClick={() => setsavedWeatherData(defaultValue)}
+                >
+                  already home
+                </Pill>
               ) : (
-                <Pill onClick={() => makeCurrentFetchedDataHome()}>
+                <Pill
+                  isPrimary={false}
+                  onClick={() => setsavedWeatherData(searchedWeatherData)}
+                >
                   click to make home
                 </Pill>
               )}
@@ -50,32 +62,40 @@ const SearchResultWrapper = styled.div`
 `;
 
 const ResultBar = styled.div`
-  width: 100%;
+  width: auto;
   height: 100%;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  background-color: white;
 `;
 const Spinner = styled.svg`
   width: 30px;
   height: 30px;
 `;
 
-const Pill = styled.div`
+const CityNameTab = styled.div`
+  font-size: 40px;
+  text-transform: uppercase;
+  font-weight: bold;
+  color: darkslateblue;
+`;
+
+const Pill = styled.div<{ isPrimary: boolean }>`
   cursor: pointer;
   border-radius: 10px;
-  border: 1px solid gray;
+  border: 1px solid white;
   padding: 5px;
+  background-color: ${({ isPrimary }) => (isPrimary ? "red" : "green")};
+  color: white;
 `;
 
 const ResultsModule = styled.div`
-  width: 380px;
+  width: 100%;
   height: 100px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px dashed gray;
 `;
 
 export default SearchResult;

@@ -4,20 +4,20 @@ import styled from "styled-components";
 type TextInputProps = {
   value: string;
   labelText?: string;
+  placeHolder?: string;
   ref: any;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
 const TextInput: React.FC<TextInputProps> = React.forwardRef(
   (props: TextInputProps, ref: any) => {
-    const { value, onChange, labelText } = props;
+    const { value, onChange, labelText, placeHolder } = props;
     return (
       <TextInputWrapper>
-        <Label htmlFor="input" ref={ref}>
-          {labelText ? labelText : "default lable"}
-        </Label>
+        <Label htmlFor="input">{labelText ? labelText : ""}</Label>
         <InputText
           ref={ref}
+          placeholder={placeHolder ? placeHolder : ""}
           type="text"
           id="input"
           name="input"
@@ -41,11 +41,11 @@ const Label = styled.label`
 `;
 
 const InputText = styled.input`
-  border: 2px solid gray;
+  border: 2px solid lightsteelblue;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   border-radius: 10px;
   font-size: 20px;
-  width: 350px;
+  width: ${({ theme }) => theme.sizes.inputWidth};
   padding: 10px;
 `;
 

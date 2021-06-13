@@ -1,4 +1,4 @@
-import { atom, selector, useRecoilCallback } from "recoil";
+import { atom, useRecoilCallback } from "recoil";
 import { weatherType } from "../WeatherRestAPI/types";
 import { requestWeather } from "../WeatherRestAPI/RequestWeather";
 
@@ -37,34 +37,38 @@ export const defaultValue: weatherType = {
     unit: "_",
   },
 };
-
+// saved weather data
 export const cityWeatherData = atom<weatherType>({
   key: "city.Weather.Data",
   default: defaultValue,
 });
 
-export const FetchWeatherData = () => {
-  return useRecoilCallback(({ set }) => async (cityName: string) => {
-    const res = await requestWeather(cityName);
-    const weatherData: weatherType = await res.json();
-    set(cityWeatherData, weatherData);
-  });
-};
+export const loadState = atom<boolean>({
+  key: "load.State",
+  default: false,
+});
 
-// export const fetchWeatherData = selector<weatherType>({
-//   key: "fetch.Weather.Data",
-//   get: ({ get }) => get(cityWeatherData),
-//   set:
-//     ({ set }) =>
-//     async (data:string) => {
-//       const response = await RequestWeather(data);
-//       const weatherData =await response.json();
-//       set(cityWeatherData, weatherData)
-//     },
-//   //set(cityWeatherData, newWeatherValue),
-// });
-// export const storeWeatherDataIntoAtom = selector<weatherType | undefined>({
-//   key: "store.Weather.Data.Into.Atom",
-//   get: ({ get }) => get(cityWeatherData),
-//   set: ({ set }, newWeatherValue) => set(cityWeatherData, newWeatherValue),
-// });
+export const inputText = atom<string>({
+  key: "input.Text",
+  default: "",
+});
+
+// current searched weather data
+export const searchedCityWeatherData = atom<weatherType>({
+  key: "searched.City.Weather.Data",
+  default: defaultValue,
+});
+
+export const useFetchData = () => {
+  return useRecoilCallback(({ set }) => {
+    return async (inputText: string) => {
+      const res = await requestWeather(inputText);
+      const weatherData: weatherType = await res.json();
+      if (weatherData.request) {
+        set(searchedCityWeatherData, weatherData);
+      } else {
+        set(searchedCityWeatherData, defaultValue);
+      }
+    };
+  }, []);
+};

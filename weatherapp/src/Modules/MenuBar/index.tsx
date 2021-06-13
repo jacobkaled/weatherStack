@@ -10,18 +10,22 @@ type MenuBarProps = {
 };
 const MenuBar: React.FC<MenuBarProps> = (props: MenuBarProps) => {
   const { changeCurrentTab } = props;
-  const currentWeatherData = useRecoilValue(cityWeatherData);
+  const savedWeatherData = useRecoilValue(cityWeatherData);
 
+  const isDataAvailable = savedWeatherData.location.name !== "_";
+  console.log("siAAAcitve ", isDataAvailable);
   return (
     <MenuBarWrapper>
-      <Button onClick={() => changeCurrentTab("search")}> Search City</Button>
+      <Button isActive={true} onClick={() => changeCurrentTab("search")}>
+        Search City
+      </Button>
       <Button
-        onClick={() =>
-          currentWeatherData.location.name !== "_" &&
-          changeCurrentTab("display")
-        }
+        isActive={isDataAvailable}
+        onClick={() => isDataAvailable && changeCurrentTab("display")}
       >
-        show weather data
+        {isDataAvailable
+          ? `show ${savedWeatherData.location.name} weather data`
+          : "No City saved as home"}
       </Button>
     </MenuBarWrapper>
   );
@@ -33,13 +37,14 @@ const MenuBarWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-around;
-  background-color: lightgray;
+  background-color: lightsteelblue;
 `;
 
-const Button = styled.div`
-  cursor: pointer;
+const Button = styled.div<{ isActive: boolean }>`
+  cursor: ${({ isActive }) => (isActive ? "pointer" : "not-allowed")};
+  color: ${({ isActive }) => (isActive ? "black" : "white")};
   height: 100%;
-  border: 1px solid gray;
+  border: 2px solid white;
   flex: 1;
   display: flex;
   align-items: center;
